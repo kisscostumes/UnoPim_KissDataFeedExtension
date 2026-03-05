@@ -126,6 +126,33 @@ php artisan migrate
 
 If the update includes new migrations or seeders, the `migrate` command will apply them. Existing data is not affected.
 
+### Clearing caches after an update
+
+After updating the package, you **must** clear cached config and restart queue workers. Laravel caches config at boot, so changes to exporter registration, menu items, or ACL permissions won't take effect until caches are cleared.
+
+```bash
+# Clear cached config (required after any config changes)
+php artisan config:clear
+
+# Clear compiled views (required after any Blade template changes)
+php artisan view:clear
+
+# Restart queue workers so they pick up the new code
+# (use sudo if the workers run as a different user, e.g. www-data)
+sudo php artisan queue:restart
+```
+
+**When is this needed?**
+
+| What changed                          | Commands to run                                          |
+|---------------------------------------|----------------------------------------------------------|
+| Config files (menu, ACL, exporters)   | `php artisan config:clear`                               |
+| Blade templates (views)               | `php artisan view:clear`                                 |
+| PHP code (controllers, services, etc) | `sudo php artisan queue:restart`                         |
+| Any package update                    | All three commands above                                 |
+
+> **Tip:** After any `composer update` of this package, it's safest to run all three commands.
+
 ## Uninstallation
 
 1. Remove the package:

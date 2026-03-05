@@ -15,7 +15,7 @@ use Webkul\Product\Repositories\ProductRepository;
 
 class ProductExporter extends AbstractExporter
 {
-    protected const BATCH_SIZE = 50;
+    public const BATCH_SIZE = 50;
 
     protected bool $exportsFile = false;
 
