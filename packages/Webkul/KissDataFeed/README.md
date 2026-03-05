@@ -11,7 +11,7 @@ Connects UnoPim to the Kiss Customer DataFeed API, enabling product data export 
 
 ### Option A: Composer (recommended)
 
-To install via Composer, the package must be published on [Packagist](https://packagist.org/). Once published:
+To install via Composer, the package must be published on [Packagist](https://packagist.org/). Once published, run the following from your **UnoPim project root** (the directory containing `artisan`, `vendor/`, `config/`, etc.):
 
 ```bash
 composer require darkloop/unopim-kiss-datafeed
@@ -20,11 +20,11 @@ composer require darkloop/unopim-kiss-datafeed
 To install a specific branch (e.g. for development or testing):
 
 ```bash
-# Install the master branch
-composer require darkloop/unopim-kiss-datafeed:dev-master
+# Install the main branch
+composer require darkloop/unopim-kiss-datafeed:dev-main
 
 # Install a specific branch (prefix branch name with dev-)
-composer require darkloop/unopim-kiss-datafeed:dev-feature-branch
+composer require darkloop/unopim-kiss-datafeed:dev-some-feature-branch
 ```
 
 > **Note:** Installing dev branches requires `"minimum-stability": "dev"` in your root `composer.json`, or using the `--stability=dev` flag.
@@ -85,6 +85,46 @@ After installation, log into the UnoPim admin panel. You will see a new **Kiss D
 - **Credentials** -- Manage API connections (URL, client ID, client secret)
 - **Field Mapping** -- Map UnoPim attributes to DataFeed API fields per credential
 - **Export Products** -- Trigger bulk product export to a selected credential
+
+## Publishing a new version
+
+When you make changes to the extension and want to release a new version:
+
+1. Commit and push your changes to GitHub:
+
+```bash
+git add .
+git commit -m "Description of changes"
+git push origin main
+```
+
+2. Create a version tag following [semantic versioning](https://semver.org/) (`major.minor.patch`):
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Packagist will automatically detect the new tag (if you have auto-update enabled) and make it available. If not, log into Packagist and click "Update" on your package page.
+
+Without a tagged release, Composer will only find `dev-main` and require the `--stability=dev` flag.
+
+## Updating on the UnoPim server
+
+From the **UnoPim project root** on your server:
+
+```bash
+# Update to the latest stable release
+composer update darkloop/unopim-kiss-datafeed
+
+# Or update to a specific version
+composer require darkloop/unopim-kiss-datafeed:^1.1
+
+# Run any new migrations
+php artisan migrate
+```
+
+If the update includes new migrations or seeders, the `migrate` command will apply them. Existing data is not affected.
 
 ## Uninstallation
 

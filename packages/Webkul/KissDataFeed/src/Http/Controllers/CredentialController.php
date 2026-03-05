@@ -142,6 +142,11 @@ class CredentialController extends Controller
      */
     protected function isInternalUrl(string $url): bool
     {
+        // Allow private IPs in local/development environments
+        if (app()->environment('local', 'development')) {
+            return false;
+        }
+
         $host = parse_url($url, PHP_URL_HOST);
 
         if (empty($host)) {

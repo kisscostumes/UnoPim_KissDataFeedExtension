@@ -44,11 +44,13 @@ class KissApiAuthService
      */
     public function requestNewToken(CredentialConfig $credential): array
     {
-        $host = parse_url($credential->api_url, PHP_URL_HOST);
-        $ip = $host ? gethostbyname($host) : null;
+        if (! app()->environment('local', 'development')) {
+            $host = parse_url($credential->api_url, PHP_URL_HOST);
+            $ip = $host ? gethostbyname($host) : null;
 
-        if (! $ip || ! filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
-            throw new \RuntimeException('API URL resolves to a private or reserved IP address.');
+            if (! $ip || ! filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                throw new \RuntimeException('API URL resolves to a private or reserved IP address.');
+            }
         }
 
         $response = Http::timeout(10)->asForm()->post($credential->api_url.'/auth/token', [

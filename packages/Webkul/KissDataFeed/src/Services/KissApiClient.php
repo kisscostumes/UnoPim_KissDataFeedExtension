@@ -89,11 +89,13 @@ class KissApiClient
 
     protected function sendRequest(string $method, string $url, string $token, ?array $body): Response
     {
-        $host = parse_url($url, PHP_URL_HOST);
-        $ip = $host ? gethostbyname($host) : null;
+        if (! app()->environment('local', 'development')) {
+            $host = parse_url($url, PHP_URL_HOST);
+            $ip = $host ? gethostbyname($host) : null;
 
-        if (! $ip || ! filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
-            throw new \RuntimeException('API URL resolves to a private or reserved IP address.');
+            if (! $ip || ! filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                throw new \RuntimeException('API URL resolves to a private or reserved IP address.');
+            }
         }
 
         $pending = Http::timeout(30)
