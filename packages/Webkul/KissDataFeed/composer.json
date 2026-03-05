@@ -1,5 +1,5 @@
 {
-    "name": "unopim/kiss-datafeed",
+    "name": "darkloop/unopim-kiss-datafeed",
     "description": "Kiss Customer DataFeed API connector for UnoPim",
     "type": "library",
     "license": "MIT",

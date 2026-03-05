@@ -14,17 +14,17 @@ Connects UnoPim to the Kiss Customer DataFeed API, enabling product data export 
 To install via Composer, the package must be published on [Packagist](https://packagist.org/). Once published:
 
 ```bash
-composer require unopim/kiss-datafeed
+composer require darkloop/unopim-kiss-datafeed
 ```
 
 To install a specific branch (e.g. for development or testing):
 
 ```bash
 # Install the master branch
-composer require unopim/kiss-datafeed:dev-master
+composer require darkloop/unopim-kiss-datafeed:dev-master
 
 # Install a specific branch (prefix branch name with dev-)
-composer require unopim/kiss-datafeed:dev-feature-branch
+composer require darkloop/unopim-kiss-datafeed:dev-feature-branch
 ```
 
 > **Note:** Installing dev branches requires `"minimum-stability": "dev"` in your root `composer.json`, or using the `--stability=dev` flag.
@@ -91,7 +91,7 @@ After installation, log into the UnoPim admin panel. You will see a new **Kiss D
 1. Remove the package:
 
 ```bash
-composer remove unopim/kiss-datafeed
+composer remove darkloop/unopim-kiss-datafeed
 ```
 
 Or, if manually installed, remove the directory from `packages/Webkul/KissDataFeed`, the PSR-4 entry from `composer.json`, and the provider from `config/concord.php`.
