@@ -15,7 +15,7 @@ use Webkul\Product\Repositories\ProductRepository;
 
 class ProductExporter extends AbstractExporter
 {
-    public const BATCH_SIZE = 50;
+    public const BATCH_SIZE = 25;
 
     protected bool $exportsFile = false;
 
@@ -58,7 +58,13 @@ class ProductExporter extends AbstractExporter
         $updated = 0;
         $failed = 0;
 
-        foreach ($products as $product) {
+        foreach ($products as $index => $product) {
+            // Throttle to stay under API rate limit (500 req/min for admin)
+            // Each product makes ~2 requests, 300ms delay = ~400 req/min
+            if ($index > 0) {
+                usleep(300000);
+            }
+
             try {
                 $result = $this->productExportService->exportSingleProduct($credential, $product, $mapping, $defaults);
 
