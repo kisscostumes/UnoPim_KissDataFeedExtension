@@ -105,7 +105,7 @@ class ProductExporter extends AbstractExporter
             $query->whereJsonContains('values->categories', $category);
         }
 
-        return $query->all()?->getIterator();
+        return $query->get()->getIterator();
     }
 
     /**
