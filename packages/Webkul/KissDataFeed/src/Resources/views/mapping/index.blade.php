@@ -62,7 +62,7 @@
                                             :name="$fieldName"
                                             :value="$value"
                                             :label="$field['label']"
-                                            :placeholder="$field['label']"
+                                            placeholder="Select UnoPim attribute..."
                                             track-by="code"
                                             label-by="label"
                                             :entityName="json_encode($field['types'])"
@@ -79,7 +79,7 @@
                                             :name="'default_' . $fieldName"
                                             :id="'default_' . $fieldName"
                                             :value="old('default_' . $fieldName) ?? $defaultValue"
-                                            :placeholder="$field['label']"
+                                            placeholder="Enter default value..."
                                             ::disabled="disabledFields['default_{{ $fieldName }}']"
                                         />
                                     </x-admin::form.control-group>
