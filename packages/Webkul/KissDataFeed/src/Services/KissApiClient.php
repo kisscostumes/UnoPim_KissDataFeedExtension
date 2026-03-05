@@ -4,6 +4,7 @@ namespace Webkul\KissDataFeed\Services;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Webkul\KissDataFeed\Exceptions\ApiConflictException;
 use Webkul\KissDataFeed\Exceptions\ApiNotFoundException;
 use Webkul\KissDataFeed\Models\CredentialConfig;
@@ -141,6 +142,8 @@ class KissApiClient
         }
 
         $error = $response->json('error', 'Unknown API error');
+
+        Log::error("Kiss DataFeed API response: status={$response->status()}, body={$response->body()}");
 
         throw match ($response->status()) {
             404 => new ApiNotFoundException($error),
