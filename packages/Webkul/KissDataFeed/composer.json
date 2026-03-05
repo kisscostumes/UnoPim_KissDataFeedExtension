@@ -1,0 +1,24 @@
+{
+    "name": "unopim/kiss-datafeed",
+    "description": "Kiss Customer DataFeed API connector for UnoPim",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Webkul\\KissDataFeed\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\KissDataFeed\\Providers\\KissDataFeedServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php artisan kiss-datafeed:install"
+        ]
+    },
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,31 @@
+# Dependencies
+/vendor/
+node_modules/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Laravel / PHP
+storage/*.key
+*.log
+
+# Composer
+composer.lock
+
+# Claude Code
+.claude/
+docs/
