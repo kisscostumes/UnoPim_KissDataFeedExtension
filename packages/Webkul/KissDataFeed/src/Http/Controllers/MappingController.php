@@ -3,6 +3,7 @@
 namespace Webkul\KissDataFeed\Http\Controllers;
 
 use Webkul\Admin\Http\Controllers\Controller;
+use Webkul\Attribute\Repositories\AttributeRepository;
 use Webkul\KissDataFeed\Repositories\CredentialRepository;
 use Webkul\KissDataFeed\Repositories\FieldMappingRepository;
 
@@ -38,7 +39,8 @@ class MappingController extends Controller
 
     public function __construct(
         protected FieldMappingRepository $fieldMappingRepository,
-        protected CredentialRepository $credentialRepository
+        protected CredentialRepository $credentialRepository,
+        protected AttributeRepository $attributeRepository
     ) {}
 
     public function select()
@@ -63,12 +65,25 @@ class MappingController extends Controller
 
         $mappingFields = self::MAPPING_FIELDS;
 
+        $currentLocaleCode = core()->getRequestedLocaleCode();
+
+        $attributes = $this->attributeRepository->all()->map(function ($attribute) use ($currentLocaleCode) {
+            $translatedLabel = $attribute->translate($currentLocaleCode)?->name;
+
+            return [
+                'code'  => $attribute->code,
+                'label' => ! empty($translatedLabel) ? $translatedLabel : "[{$attribute->code}]",
+                'type'  => $attribute->type,
+            ];
+        })->sortBy('label')->values();
+
         return view('kiss_datafeed::mapping.index', compact(
             'credentialId',
             'credential',
             'mappingFields',
             'currentMappings',
-            'currentDefaults'
+            'currentDefaults',
+            'attributes'
         ));
     }
 

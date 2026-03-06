@@ -49,6 +49,7 @@
                                     $fieldName = $field['name'];
                                     $value = $currentMappings[$fieldName] ?? '';
                                     $defaultValue = $currentDefaults[$fieldName] ?? '';
+                                    $fieldTypes = $field['types'];
                                 @endphp
 
                                 <div class="grid grid-cols-3 gap-2.5 items-center px-4 py-4 border-b dark:border-cherry-800 text-gray-600 dark:text-gray-300 transition-all hover:bg-violet-50 hover:bg-opacity-30 dark:hover:bg-cherry-800">
@@ -56,21 +57,21 @@
                                     <p class="break-words">{{ $field['label'] }} <span class="text-xs text-gray-400">[{{ $fieldName }}]</span></p>
 
                                     {{-- Column 2: UnoPim attribute dropdown --}}
-                                    <x-admin::form.control-group class="!mb-0">
-                                        <x-admin::form.control-group.control
-                                            type="select"
-                                            :name="$fieldName"
-                                            :value="$value"
-                                            :label="$field['label']"
-                                            placeholder="Select UnoPim attribute..."
-                                            track-by="code"
-                                            label-by="label"
-                                            :entityName="json_encode($field['types'])"
-                                            async="true"
-                                            :list-route="route('kiss_datafeed.options.attributes')"
-                                            @@input="handleSelectChange($event, '{{ $fieldName }}')"
-                                        />
-                                    </x-admin::form.control-group>
+                                    <select
+                                        name="{{ $fieldName }}"
+                                        class="w-full rounded border px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 dark:bg-cherry-800 dark:border-cherry-800 transition-all hover:border-gray-400"
+                                        @@change="handleSelectChange($event.target.value, '{{ $fieldName }}')"
+                                    >
+                                        <option value="">Select UnoPim attribute...</option>
+                                        @foreach ($attributes as $attribute)
+                                            <option
+                                                value="{{ $attribute['code'] }}"
+                                                {{ $value === $attribute['code'] ? 'selected' : '' }}
+                                            >
+                                                {{ $attribute['label'] }} ({{ $attribute['type'] }})
+                                            </option>
+                                        @endforeach
+                                    </select>
 
                                     {{-- Column 3: Default/fixed value --}}
                                     <x-admin::form.control-group class="!mb-0">
@@ -107,10 +108,10 @@
                 },
 
                 methods: {
-                    handleSelectChange(event, fieldName) {
+                    handleSelectChange(value, fieldName) {
                         var defaultFieldName = 'default_' + fieldName;
 
-                        this.disabledFields[defaultFieldName] = !!event;
+                        this.disabledFields[defaultFieldName] = !!value;
                     },
                 },
             });
